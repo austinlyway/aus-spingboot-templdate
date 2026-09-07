@@ -1,0 +1,38 @@
+# Build output
+target/
+build/
+out/
+*.class
+*.jar
+*.war
+
+# IDE / editor
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.project
+.classpath
+.settings/
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Maven local repo (defensive — usually outside the project)
+.m2/
+
+# Environment / secrets (defensive — never commit secrets)
+.env
+.env.*
+!.env.example
+
+# IDE scratch files
+*.swp
+*.swo
+*~
