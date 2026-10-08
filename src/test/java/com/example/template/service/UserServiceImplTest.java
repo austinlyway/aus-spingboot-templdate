@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -61,18 +60,21 @@ class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("listRecent clamps to at least 1 and maps entities to DTOs")
+    @DisplayName("listRecent returns all rows and applies the limit on the Java side")
     void listRecent() {
-        when(userMapper.selectAll(anyInt())).thenReturn(Arrays.asList(
+        when(userMapper.selectAll()).thenReturn(Arrays.asList(
                 User.builder().id(1L).username("a").build(),
-                User.builder().id(2L).username("b").build()
+                User.builder().id(2L).username("b").build(),
+                User.builder().id(3L).username("c").build()
         ));
 
-        List<UserDto> out = service.listRecent(0);
+        // limit=2 — service should clamp the result to two entries.
+        List<UserDto> out = service.listRecent(2);
 
         assertEquals(2, out.size());
         assertEquals("a", out.get(0).getUsername());
-        verify(userMapper).selectAll(eq(1)); // clamped to 1
+        assertEquals("b", out.get(1).getUsername());
+        verify(userMapper).selectAll();
     }
 
     @Test

@@ -10,44 +10,24 @@
         <result property="age" column="age"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="deleted" column="deleted"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id, username, email, age, created_at, updated_at
-    </sql>
+    <!--
+        Single-table CRUD (insert / update / select / delete / count) is generated
+        automatically by BaseMapper via @InsertProvider / @UpdateProvider etc. This
+        XML file hosts only mapper-specific queries that don't fit the generic
+        pattern. Add new custom methods here as your domain grows.
+    -->
 
-    <select id="selectById" resultMap="UserResultMap">
-        SELECT <include refid="Base_Column_List"/>
+    <select id="findByEmailLike" resultMap="UserResultMap">
+        SELECT id, username, email, age, created_at, updated_at, created_by, updated_by, deleted
         FROM users
-        WHERE id = #{id}
-    </select>
-
-    <select id="selectAll" resultMap="UserResultMap">
-        SELECT <include refid="Base_Column_List"/>
-        FROM users
+        WHERE email LIKE #{pattern}
+        AND deleted = 0
         ORDER BY id DESC
-        LIMIT #{limit}
     </select>
-
-    <insert id="insert" parameterType="com.example.template.entity.User"
-            useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO users (username, email, age, created_at, updated_at)
-        VALUES (#{username}, #{email}, #{age}, NOW(), NOW())
-    </insert>
-
-    <update id="updateById" parameterType="com.example.template.entity.User">
-        UPDATE users
-        <set>
-            <if test="username != null">username = #{username},</if>
-            <if test="email != null">email = #{email},</if>
-            <if test="age != null">age = #{age},</if>
-            updated_at = NOW()
-        </set>
-        WHERE id = #{id}
-    </update>
-
-    <delete id="deleteById">
-        DELETE FROM users WHERE id = #{id}
-    </delete>
 
 </mapper>

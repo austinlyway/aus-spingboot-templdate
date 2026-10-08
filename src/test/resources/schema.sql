@@ -5,5 +5,8 @@ CREATE TABLE users (
     email VARCHAR(128),
     age INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by VARCHAR(64),
+    updated_by VARCHAR(64),
+    deleted INT NOT NULL DEFAULT 0
 );

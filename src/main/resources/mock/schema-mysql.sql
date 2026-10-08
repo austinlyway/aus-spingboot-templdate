@@ -12,5 +12,8 @@ CREATE TABLE IF NOT EXISTS users (
     age INT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by VARCHAR(64),
+    updated_by VARCHAR(64),
+    deleted INT NOT NULL DEFAULT 0,
     INDEX idx_username (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

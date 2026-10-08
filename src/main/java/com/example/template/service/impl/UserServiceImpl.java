@@ -32,7 +32,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> listRecent(int limit) {
-        return userMapper.selectAll(Math.max(1, limit)).stream()
+        // BaseMapper.selectAll() returns every non-soft-deleted row; cap to the
+        // requested limit on the Java side to preserve the previous behaviour.
+        return userMapper.selectAll().stream()
+                .limit(Math.max(1, limit))
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
